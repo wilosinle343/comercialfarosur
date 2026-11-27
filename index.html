@@ -2298,7 +2298,7 @@ window.FARO_CONFIG = {
         '<div class="product-media tone-' + ((i % 6) + 1) + '">' +
           (badge ? '<span class="badge ' + badgeClass(badge) + '">' + esc(badge) + '</span>' : '') +
           '<span class="product-emoji" data-edit="products.' + i + '.emoji">' + esc(p.emoji || '📦') + '</span>' +
-          (img ? '<img src="' + esc(img) + '" alt="' + esc(p.name) + '" loading="lazy" onerror="this.remove()">' : '') +
+          (img ? '<img src="' + esc(img) + '" alt="' + esc(p.name) + '" loading="lazy" onerror="this.remove()" style="cursor:zoom-in" onclick="openZoom(this.src)">' : '') +
         '</div>' +
         '<div class="product-body">' +
           '<div class="product-cat" data-edit="products.' + i + '.category">' + esc(p.category) + '</div>' +
@@ -3463,6 +3463,15 @@ window.FARO_CONFIG = {
   document.addEventListener('keydown', (e)=>{
     if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='a'){ e.preventDefault(); pedirClave(); }
   });
+  </script>
+
+  <div id="zoomModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;" onclick="closeZoom()">
+    <img id="zoomImg" src="" alt="" style="max-width:90vw;max-height:90vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+  </div>
+  <script>
+  function openZoom(src){ var m=document.getElementById('zoomModal'); var i=document.getElementById('zoomImg'); if(!m||!i||!src) return; i.src=src; m.style.display='flex'; }
+  function closeZoom(){ var m=document.getElementById('zoomModal'); if(m) m.style.display='none'; }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeZoom(); });
   </script>
 </body>
 </html>
