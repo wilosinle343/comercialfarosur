@@ -1827,6 +1827,18 @@ window.FARO_CONFIG = {
       "emoji": "📦",
       "image": "https://raw.githubusercontent.com/wilosinle343/comercialfarosur/main/fotos/captura-de-pantalla-2026-11-05-083153.png",
       "link": ""
+    },
+    {
+      "name": "Nuevo producto",
+      "category": "Hogar",
+      "price": "",
+      "oldPrice": "",
+      "unit": "por unidad",
+      "min": "Mínimo 1 unidad",
+      "badge": "",
+      "emoji": "",
+      "image": "https://raw.githubusercontent.com/wilosinle343/comercialfarosur/main/fotos/bolsa-totto.jpeg",
+      "link": ""
     }
   ],
   "footer": {
@@ -3334,6 +3346,51 @@ window.FARO_CONFIG = {
       });
     }
   }
+
+  /* ---------- Auto-agregar producto desde URL (automatizador) ---------- */
+  (function autoAgregarDesdeUrl() {
+    if (!params) return;
+    var imgParam = params.get('imagen') || params.get('imagenes') || '';
+    if (!imgParam) return;
+    var imgs = imgParam.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!imgs.length) return;
+    // Forzar modo edición en local
+    if (isLocal) {
+      if (editToggle) editToggle.style.display = 'inline-flex';
+      if (editHint) editHint.style.display = 'flex';
+      try { setPanel(true); } catch (e) {}
+    }
+    var added = 0;
+    imgs.forEach(function (url) {
+      var exists = (cfg.products || []).some(function (p) { return p.image === url; });
+      if (exists) return;
+      var firstCat = (cfg.categories && cfg.categories[0] && cfg.categories[0].name) || '';
+      cfg.products = cfg.products || [];
+      cfg.products.push({
+        name: 'Nuevo producto',
+        category: firstCat,
+        price: '',
+        oldPrice: '',
+        unit: 'por unidad',
+        min: 'Mínimo 1 unidad',
+        badge: '',
+        emoji: '',
+        image: url,
+        link: ''
+      });
+      added++;
+    });
+    if (added) {
+      saveNow();
+      ui.tab = 'products';
+      renderPage();
+      renderPanel(true);
+      toast(added + ' producto(s) agregado(s) con imagen. Edita nombre, categoría y precio.');
+    }
+    // Limpiar la URL para que no se vuelva a agregar al recargar
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  })();
+
 })();
 
 </script>
