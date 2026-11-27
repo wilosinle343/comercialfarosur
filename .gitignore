@@ -1,0 +1,12 @@
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Herramientas locales (no publicar)
+automatizador/
+Faro Sur Editor/
+links_fotos.csv
+preparar_fotos.ps1
+generar_productos.ps1
+productos_config.json
